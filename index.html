@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MOtoFIX - Panggil Teknisi Motor</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        color: #333;
+      }
+
+      .container {
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 0;
+      }
+
+      .header {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        padding: 20px;
+        text-align: center;
+        box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        font-size: 28px;
+        font-weight: bold;
+        color: #667eea;
+        margin-bottom: 5px;
+      }
+
+      .tagline {
+        color: #666;
+        font-size: 14px;
+      }
+
+      .main-content {
+        padding: 20px;
+      }
+
+      .service-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        transform: translateY(0);
+        transition: all 0.3s ease;
+      }
+
+      .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+      }
+
+      .card-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .icon {
+        width: 24px;
+        height: 24px;
+        background: #667eea;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+      }
+
+      .form-input {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+      }
+
+      .form-input:focus {
+        outline: none;
+        border-color: #667eea;
+        transform: scale(1.02);
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .form-select {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e1e5e9;
+        border-radius: 10px;
+        font-size: 16px;
+        background: rgba(255, 255, 255, 0.9);
+        transition: all 0.3s ease;
+      }
+
+      .form-select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-bottom: 10px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.9);
+        color: #667eea;
+        border: 2px solid #667eea;
+      }
+
+      .btn-secondary:hover {
+        background: #667eea;
+        color: white;
+        transform: translateY(-2px);
+      }
+
+      .status-indicator {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 15px;
+      }
+
+      .status-waiting {
+        background: #fff3cd;
+        color: #856404;
+      }
+
+      .status-found {
+        background: #d4edda;
+        color: #155724;
+      }
+
+      .technician-info {
+        background: rgba(102, 126, 234, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+
+      .payment-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .payment-item:last-child {
+        border-bottom: none;
+        font-weight: bold;
+        font-size: 18px;
+        color: #667eea;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      .location-info {
+        background: rgba(118, 75, 162, 0.1);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 14px;
+      }
+
+      .pulse {
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.05);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .floating-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 60px;
+        height: 60px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 24px;
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .floating-btn:hover {
+        transform: scale(1.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="logo">MOtoFIX</div>
+        <div class="tagline">Panggil Teknisi Motor Terdekat</div>
+      </div>
+
+      <div class="main-content">
+        <!-- Form Panggil Teknisi -->
+        <div class="service-card" id="orderForm">
+          <div class="card-title">
+            <div class="icon">🔧</div>
+            Panggil Teknisi
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Jenis Kendaraan</label>
+            <select class="form-select" id="vehicleType">
+              <option value="">Pilih jenis kendaraan</option>
+              <option value="motor">Motor</option>
+              <option value="mobil">Mobil</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Merk & Model</label>
+            <input
+              type="text"
+              class="form-input"
+              id="vehicleModel"
+              placeholder="Contoh: Honda Vario 150"
+            />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Deskripsi Masalah</label>
+            <textarea
+              class="form-input"
+              id="problemDesc"
+              rows="3"
+              placeholder="Jelaskan masalah kendaraan Anda..."
+            ></textarea>
+          </div>
+
+          <div class="location-info">
+            <strong>📍 Lokasi Anda:</strong><br />
+            <span id="currentLocation">Mengambil lokasi...</span>
+          </div>
+
+          <button class="btn btn-primary" onclick="callTechnician()">
+            Panggil Teknisi Sekarang
+          </button>
+        </div>
+
+        <!-- Status Pencarian Teknisi -->
+        <div class="service-card hidden" id="searchingStatus">
+          <div class="card-title">
+            <div class="icon pulse">🔍</div>
+            Mencari Teknisi
+          </div>
+
+          <div class="status-indicator status-waiting">
+            Mencari teknisi terdekat...
+          </div>
+
+          <p>
+            Mohon tunggu, kami sedang mencari teknisi terbaik di sekitar Anda.
+          </p>
+
+          <button class="btn btn-secondary" onclick="cancelSearch()">
+            Batal
+          </button>
+        </div>
+
+        <!-- Info Teknisi Ditemukan -->
+        <div class="service-card hidden" id="technicianFound">
+          <div class="card-title">
+            <div class="icon">👨‍🔧</div>
+            Teknisi Ditemukan
+          </div>
+
+          <div class="status-indicator status-found">
+            Teknisi dalam perjalanan
+          </div>
+
+          <div class="technician-info">
+            <strong>Budi Santoso</strong><br />
+            ⭐ 4.8 (127 review)<br />
+            📱 +62 812-3456-7890<br />
+            🕐 Estimasi tiba: 15 menit<br />
+            🚗 Honda Vario - B 1234 XYZ
+          </div>
+
+          <button class="btn btn-secondary" onclick="callTechnician()">
+            📞 Hubungi Teknisi
+          </button>
+          <button class="btn btn-primary" onclick="showPayment()">
+            Lanjut ke Pembayaran
+          </button>
+        </div>
+
+        <!-- Form Pembayaran -->
+        <div class="service-card hidden" id="paymentForm">
+          <div class="card-title">
+            <div class="icon">💳</div>
+            Detail Pembayaran
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Jasa Servis</label>
+            <div class="payment-item">
+              <span>Biaya panggil teknisi</span>
+              <span>Rp 25.000</span>
+            </div>
+            <div class="payment-item">
+              <span>Jasa perbaikan</span>
+              <span id="servicePrice">Rp 50.000</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Sparepart yang Diganti</label>
+            <div id="sparepartList">
+              <div class="payment-item">
+                <span>Oli mesin (1 liter)</span>
+                <span>Rp 35.000</span>
+              </div>
+              <div class="payment-item">
+                <span>Filter oli</span>
+                <span>Rp 15.000</span>
+              </div>
+            </div>
+            <button class="btn btn-secondary" onclick="addSparepart()">
+              + Tambah Sparepart
+            </button>
+          </div>
+
+          <div class="form-group">
+            <div class="payment-item">
+              <strong>Total Pembayaran</strong>
+              <strong id="totalPayment">Rp 125.000</strong>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Metode Pembayaran</label>
+            <select class="form-select" id="paymentMethod">
+              <option value="cash">Tunai</option>
+              <option value="transfer">Transfer Bank</option>
+              <option value="ewallet">E-Wallet</option>
+            </select>
+          </div>
+
+          <button class="btn btn-primary" onclick="processPayment()">
+            Bayar Sekarang
+          </button>
+        </div>
+
+        <!-- Konfirmasi Pembayaran -->
+        <div class="service-card hidden" id="paymentSuccess">
+          <div class="card-title">
+            <div class="icon">✅</div>
+            Pembayaran Berhasil
+          </div>
+
+          <p style="text-align: center; margin: 20px 0">
+            Terima kasih! Pembayaran Anda telah berhasil diproses.
+          </p>
+
+          <div class="technician-info">
+            <strong>Invoice #MFX2025070201</strong><br />
+            Total: <strong>Rp 125.000</strong><br />
+            Metode: Transfer Bank<br />
+            Status: ✅ Lunas
+          </div>
+
+          <button class="btn btn-primary" onclick="newOrder()">
+            Pesan Lagi
+          </button>
+          <button class="btn btn-secondary" onclick="downloadInvoice()">
+            📄 Download Invoice
+          </button>
+        </div>
+      </div>
+
+      <div class="floating-btn" onclick="showHelp()">❓</div>
+    </div>
+
+    <script>
+      let currentStep = "order";
+      let orderData = {};
+
+      // Simulasi mendapatkan lokasi
+      function getCurrentLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              document.getElementById(
+                "currentLocation"
+              ).textContent = `Jl. Merdeka No. 123, Surabaya, Jawa Timur (-7.2575, 112.7521)`;
+            },
+            () => {
+              document.getElementById(
+                "currentLocation"
+              ).textContent = `Lokasi tidak dapat diakses. Gunakan lokasi manual.`;
+            }
+          );
+        } else {
+          document.getElementById(
+            "currentLocation"
+          ).textContent = `Jl. Merdeka No. 123, Surabaya, Jawa Timur`;
+        }
+      }
+
+      function callTechnician() {
+        // Validasi form
+        const vehicleType = document.getElementById("vehicleType").value;
+        const vehicleModel = document.getElementById("vehicleModel").value;
+        const problemDesc = document.getElementById("problemDesc").value;
+
+        if (!vehicleType || !vehicleModel || !problemDesc) {
+          alert("Mohon lengkapi semua field yang diperlukan!");
+          return;
+        }
+
+        // Simpan data order
+        orderData = {
+          vehicleType,
+          vehicleModel,
+          problemDesc,
+          timestamp: new Date(),
+        };
+
+        showStep("searching");
+
+        // Simulasi pencarian teknisi
+        setTimeout(() => {
+          showStep("found");
+        }, 3000);
+      }
+
+      function cancelSearch() {
+        showStep("order");
+      }
+
+      function showPayment() {
+        showStep("payment");
+      }
+
+      function addSparepart() {
+        const sparepartName = prompt("Nama sparepart:");
+        const sparepartPrice = prompt("Harga sparepart (tanpa Rp):");
+
+        if (sparepartName && sparepartPrice) {
+          const sparepartList = document.getElementById("sparepartList");
+          const newItem = document.createElement("div");
+          newItem.className = "payment-item";
+          newItem.innerHTML = `
+                    <span>${sparepartName}</span>
+                    <span>Rp ${parseInt(sparepartPrice).toLocaleString(
+                      "id-ID"
+                    )}</span>
+                `;
+          sparepartList.appendChild(newItem);
+
+          updateTotal();
+        }
+      }
+
+      function updateTotal() {
+        const paymentItems = document.querySelectorAll(
+          "#paymentForm .payment-item"
+        );
+        let total = 0;
+
+        paymentItems.forEach((item) => {
+          const priceText = item.querySelector("span:last-child").textContent;
+          const price = parseInt(priceText.replace(/[^\d]/g, ""));
+          total += price;
+        });
+
+        document.getElementById(
+          "totalPayment"
+        ).textContent = `Rp ${total.toLocaleString("id-ID")}`;
+      }
+
+      function processPayment() {
+        const paymentMethod = document.getElementById("paymentMethod").value;
+
+        if (!paymentMethod) {
+          alert("Pilih metode pembayaran!");
+          return;
+        }
+
+        // Simulasi proses pembayaran
+        alert("Memproses pembayaran...");
+
+        setTimeout(() => {
+          showStep("success");
+        }, 2000);
+      }
+
+      function newOrder() {
+        showStep("order");
+        // Reset form
+        document.getElementById("vehicleType").value = "";
+        document.getElementById("vehicleModel").value = "";
+        document.getElementById("problemDesc").value = "";
+      }
+
+      function downloadInvoice() {
+        alert("Invoice akan didownload...");
+      }
+
+      function showHelp() {
+        alert(
+          "Bantuan:\n\n1. Pilih jenis kendaraan dan jelaskan masalah\n2. Tunggu teknisi ditemukan\n3. Lakukan pembayaran setelah servis selesai\n\nHubungi: 0800-MOTOFIX"
+        );
+      }
+
+      function showStep(step) {
+        // Sembunyikan semua card
+        const cards = [
+          "orderForm",
+          "searchingStatus",
+          "technicianFound",
+          "paymentForm",
+          "paymentSuccess",
+        ];
+        cards.forEach((cardId) => {
+          document.getElementById(cardId).classList.add("hidden");
+        });
+
+        // Tampilkan card yang sesuai
+        switch (step) {
+          case "order":
+            document.getElementById("orderForm").classList.remove("hidden");
+            break;
+          case "searching":
+            document
+              .getElementById("searchingStatus")
+              .classList.remove("hidden");
+            break;
+          case "found":
+            document
+              .getElementById("technicianFound")
+              .classList.remove("hidden");
+            break;
+          case "payment":
+            document.getElementById("paymentForm").classList.remove("hidden");
+            break;
+          case "success":
+            document
+              .getElementById("paymentSuccess")
+              .classList.remove("hidden");
+            break;
+        }
+
+        currentStep = step;
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", function () {
+        getCurrentLocation();
+        showStep("order");
+      });
+    </script>
+  </body>
+</html>
